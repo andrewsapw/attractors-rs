@@ -14,6 +14,17 @@ impl Point {
             coords: vec3(x, y, z),
         }
     }
+
+    pub fn rotate_y(&self, rotation_angle: f32) -> Vec3 {
+        let y_rotate_matrix = mat3(
+            vec3(rotation_angle.cos(), 0.0, rotation_angle.sin()),
+            vec3(0.0, 1.0, 0.0),
+            vec3(-rotation_angle.sin(), 0.0, rotation_angle.cos()),
+        );
+
+        let rotated_coords = y_rotate_matrix.mul_vec3(self.coords);
+        return rotated_coords;
+    }
 }
 
 pub struct Points {
