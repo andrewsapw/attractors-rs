@@ -30,6 +30,12 @@ impl Points {
         Points { points }
     }
 
+    pub fn reset(&mut self) {
+        for idx in 0..self.points.len() {
+            self.points[idx] = Point::new();
+        }
+    }
+
     pub fn add_point(&mut self) {
         self.points.push(Point::new());
     }

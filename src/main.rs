@@ -90,6 +90,10 @@ fn handle_input(points: &mut Points, simulation_meta: &mut SimulationMeta) {
     if is_key_down(KeyCode::Backspace) {
         points.remove_point();
     }
+    if is_key_pressed(KeyCode::R) {
+        points.reset();
+    }
+
 
     if is_key_down(KeyCode::D) {
         simulation_meta.rotation_angle += 0.01;
