@@ -1,7 +1,4 @@
-use std::ops::Range;
-
 use macroquad::prelude::*;
-use macroquad::ui::root_ui;
 
 mod point;
 use point::*;
@@ -10,12 +7,6 @@ struct SimulationMeta {
     screen_width: f32,
     screen_height: f32,
     rotation_angle: f32,
-}
-
-struct LorenzParams {
-    sigma: f32,
-    rho: f32,
-    beta: f32,
 }
 
 fn step_lorenz(p: &mut Point) {
