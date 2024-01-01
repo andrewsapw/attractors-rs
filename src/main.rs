@@ -35,7 +35,7 @@ fn config() -> Conf {
 
 #[macroquad::main(config)]
 async fn main() {
-    let mut points = Points::new(200000);
+    let mut points = Points::new(20000);
     set_fullscreen(false);
     // request_new_screen_size(600.0, 600.0);
 
@@ -46,8 +46,8 @@ async fn main() {
         screen_width: screen_width(),
         screen_height: screen_height(),
         rotation_angle: rotation_angle,
-        scale: 10.0,
-        horizontal_offset: screen_width() / 2.0,
+        scale: 5.0,
+        horizontal_offset: screen_width() / 2.0 + 100.0,
         vertical_offset: screen_height() / 2.0,
     };
 
@@ -111,7 +111,7 @@ async fn main() {
 
         texture.update(&image);
 
-        Window::new(hash!(), vec2(20., 20.), vec2(400., 100.))
+        Window::new(hash!(), vec2(10., 10.), vec2(300., 100.))
             .label("Parameters")
             .close_button(false)
             .ui(&mut root_ui(), |ui| {
