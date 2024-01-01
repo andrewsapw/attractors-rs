@@ -6,7 +6,7 @@ pub struct Point {
 }
 
 const COLORS : [Color; 1] = [
-    Color::new(255.0 / 255.0, 5.0 / 255.0, 5.0 / 255.0, 0.7),
+    Color::new(255.0 / 255.0, 5.0 / 255.0, 5.0 / 255.0, 1.0),
 ];
 
 impl Point {
