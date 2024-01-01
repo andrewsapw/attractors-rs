@@ -36,8 +36,6 @@ fn config() -> Conf {
 #[macroquad::main(config)]
 async fn main() {
     let mut points = Points::new(20000);
-    set_fullscreen(false);
-    // request_new_screen_size(600.0, 600.0);
 
     let mut lorenz_attractor = Lorenz::new(7.73, 36.13, 4.9);
 
