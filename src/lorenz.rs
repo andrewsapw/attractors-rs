@@ -4,9 +4,9 @@ use crate::point::Point;
 
 pub struct Lorenz {
     // Define the parameters of the Lorenz attractor
-    sigma: f32,
-    rho: f32,
-    beta: f32,
+    pub sigma: f32,
+    pub rho: f32,
+    pub beta: f32,
 }
 
 impl Lorenz {
