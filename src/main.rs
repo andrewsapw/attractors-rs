@@ -44,8 +44,8 @@ async fn main() {
         screen_width: screen_width(),
         screen_height: screen_height(),
         rotation_angle: rotation_angle,
-        scale: 5.0,
-        horizontal_offset: screen_width() / 2.0 + 100.0,
+        scale: 7.0,
+        horizontal_offset: screen_width() / 2.0 + 7.0 * 30.0,
         vertical_offset: screen_height() / 2.0,
     };
 
