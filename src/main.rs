@@ -38,22 +38,24 @@ async fn main() {
     let mut points = Points::new(20000);
 
     let mut lorenz_attractor = Lorenz::new(7.73, 36.13, 4.9);
-
-    let rotation_angle: f32 = 90.0;
     let mut simulation_state = SimulationState {
         screen_width: screen_width(),
         screen_height: screen_height(),
-        rotation_angle: rotation_angle,
+        rotation_angle: 90.0,
         scale: 7.0,
-        horizontal_offset: screen_width() / 2.0 + 7.0 * 30.0,
+        horizontal_offset: screen_width() / 2.0,
         vertical_offset: screen_height() / 2.0,
     };
 
-    // this black image will be used to clear the screen
     let black_image = Image::gen_image_color(
         simulation_state.screen_width as u16,
         simulation_state.screen_height as u16,
-        Color { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+        Color {
+            r: 0.0,
+            g: 0.0,
+            b: 0.0,
+            a: 1.0,
+        },
     );
 
     // this image will be used to draw the points
@@ -94,7 +96,7 @@ async fn main() {
     loop {
         simulation_state.screen_width = screen_width();
         simulation_state.screen_height = screen_height();
-        
+
         image = black_image.clone();
 
         handle_input(&mut points, &mut simulation_state);
@@ -105,6 +107,18 @@ async fn main() {
             let screen_coords = map_coords_to_screen(rotated_coords, &simulation_state);
 
             image.set_pixel(screen_coords.x as u32, screen_coords.y as u32, point.color);
+
+            let point_mirrored_coords = -point.coords;
+            let rotated_mirrored_coords =
+                rotate_y(point_mirrored_coords, simulation_state.rotation_angle);
+            let screen_rotated_coords =
+                map_coords_to_screen(rotated_mirrored_coords, &simulation_state);
+
+            image.set_pixel(
+                screen_rotated_coords.x as u32,
+                screen_rotated_coords.y as u32,
+                point.color,
+            );
         }
 
         texture.update(&image);
@@ -113,9 +127,33 @@ async fn main() {
             .label("Parameters")
             .close_button(false)
             .ui(&mut root_ui(), |ui| {
-                ui.slider(hash!(), "Sigma", Range{start: 1.0, end:10.0}, &mut lorenz_attractor.sigma);
-                ui.slider(hash!(), "Rho", Range{start: 1.0, end:40.0}, &mut lorenz_attractor.rho);
-                ui.slider(hash!(), "Beta", Range{start: 1.0, end:10.0}, &mut lorenz_attractor.beta);
+                ui.slider(
+                    hash!(),
+                    "Sigma",
+                    Range {
+                        start: 1.0,
+                        end: 10.0,
+                    },
+                    &mut lorenz_attractor.sigma,
+                );
+                ui.slider(
+                    hash!(),
+                    "Rho",
+                    Range {
+                        start: 1.0,
+                        end: 40.0,
+                    },
+                    &mut lorenz_attractor.rho,
+                );
+                ui.slider(
+                    hash!(),
+                    "Beta",
+                    Range {
+                        start: 1.0,
+                        end: 10.0,
+                    },
+                    &mut lorenz_attractor.beta,
+                );
 
                 ui.push_skin(&window_skin);
             });
@@ -144,6 +182,12 @@ fn map_coords_to_screen(coords: Vec3, simulation_state: &SimulationState) -> Vec
 }
 
 fn handle_input(points: &mut Points, simulation_meta: &mut SimulationState) {
+    let mouse_pos_diff = mouse_delta_position();
+    if is_mouse_button_down(MouseButton::Left) {
+        simulation_meta.rotation_angle += mouse_pos_diff.x * 4.0;
+        simulation_meta.rotation_angle %= 360.0;
+    }
+
     if is_key_down(KeyCode::Space) {
         points.add_point();
     }
@@ -221,4 +265,15 @@ fn draw_info(simulation_meta: &SimulationState, num_points: usize, color: Color)
         16.0,
         color,
     );
+}
+
+fn rotate_y(coords: Vec3, rotation_angle: f32) -> Vec3 {
+    let y_rotate_matrix = mat3(
+        vec3(rotation_angle.cos(), 0.0, rotation_angle.sin()),
+        vec3(0.0, 1.0, 0.0),
+        vec3(-rotation_angle.sin(), 0.0, rotation_angle.cos()),
+    );
+
+    let rotated_coords = y_rotate_matrix.mul_vec3(coords);
+    return rotated_coords;
 }
