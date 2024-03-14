@@ -11,9 +11,9 @@ const COLORS : [Color; 1] = [
 
 impl Point {
     pub fn new() -> Self {
-        let x = rand::gen_range(-10.0, 10.0);
-        let y = rand::gen_range(-10.0, 10.0);
-        let z = rand::gen_range(-10.0, 10.0);
+        let x = rand::gen_range(-40.0, 40.0);
+        let y = rand::gen_range(-40.0, 40.0);
+        let z = rand::gen_range(-40.0, 40.0);
 
         // random color from COLORS
         let color = COLORS[rand::gen_range(0, COLORS.len())];

@@ -1,3 +1,5 @@
+use macroquad::rand;
+
 // import attractor trait
 use crate::attractor::Attractor;
 use crate::point::Point;
